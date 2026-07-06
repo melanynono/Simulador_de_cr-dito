@@ -10,4 +10,11 @@ function calcular(){
     let capacidadPago = calcularCapacidadPago(disponible);
     document.getElementById("spnCapacidadPago").textContent = capacidadPago.toFixed(2);
 
+    let monto = parseFloat(document.getElementById("txtMonto").value);
+    let plazoAnios = parseInt(document.getElementById("txtPlazo").value);
+    let tasa = parseFloat(document.getElementById("txtTasaInteres").value);
+
+    let interes = calcularInteresSimple(monto, tasa, plazoAnios);
+    document.getElementById("spnInteresPagar").textContent = interes.toFixed(2);
+
 }
