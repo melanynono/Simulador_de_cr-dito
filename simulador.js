@@ -17,4 +17,7 @@ function calcular(){
     let interes = calcularInteresSimple(monto, tasa, plazoAnios);
     document.getElementById("spnInteresPagar").textContent = interes.toFixed(2);
 
+    let totalPrestamo = calcularTotalPagar(monto, interes);
+    document.getElementById("spnTotalPrestamo").textContent = totalPrestamo.toFixed(2);
+
 }

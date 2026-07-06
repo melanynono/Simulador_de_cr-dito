@@ -24,3 +24,9 @@ function calcularInteresSimple(monto, tasa, plazoAnios){
 
 }
 
+function calcularTotalPagar(monto, interes){
+
+    let total = monto + interes + 100;
+    return total;
+}
+
