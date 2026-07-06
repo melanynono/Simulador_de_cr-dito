@@ -1,0 +1,450 @@
+PROMPTS UTILIZADOS PARA IMPLEMENTAR VALIDACIONES EN EL SIMULADOR DE CRÉDITO
+================================================================================
+
+FECHA: 2026
+PROYECTO: Simulador de Crédito - FinanCredit
+OBJETIVO: Implementar sistema completo de validaciones en formulario
+
+================================================================================
+1. PROMPT PRINCIPAL PARA SISTEMA DE VALIDACIONES
+================================================================================
+
+"Actúa como un desarrollador experto en JavaScript y validación de formularios web.
+
+Necesito implementar un sistema completo de validaciones para un simulador de crédito 
+que contiene los siguientes campos:
+
+CAMPOS DEL FORMULARIO:
+1. Ingresos Mensuales (txtIngresos)
+2. Egresos Mensuales (txtEgresos)
+3. Monto Solicitado (txtMonto)
+4. Plazo en años (txtPlazo)
+5. Tasa de Interés Anual (txtTasaInteres)
+
+REQUISITOS:
+- Las validaciones deben ejecutarse SOLO cuando el usuario presione el botón 'Calcular Crédito'
+- Si hay errores, NO se debe ejecutar el cálculo
+- Los mensajes de error deben mostrarse debajo de cada campo (NO usar alert)
+- Los errores deben desaparecer cuando el dato sea corregido
+- El código debe estar organizado en funciones reutilizables
+- NO se deben modificar los IDs existentes de los inputs
+
+TIPOS DE VALIDACIONES REQUERIDAS:
+1. Campos obligatorios
+2. Tipo de datos (solo números)
+3. Valores positivos
+4. Rangos permitidos
+5. Máximo de dígitos
+6. Validaciones lógicas (ej: egresos no mayores que ingresos)
+
+ESTILOS:
+- Mensajes en color rojo (#ef4444)
+- Texto en estilo cursivo (italic)
+- Input con borde rojo cuando tiene error
+- Background del input ligeramente rojo cuando tiene error"
+
+================================================================================
+2. PROMPT PARA VALIDACIONES ESPECÍFICAS POR CAMPO
+================================================================================
+
+"Define las reglas de validación específicas para cada campo del simulador de crédito:
+
+CAMPO: INGRESOS MENSUALES (txtIngresos)
+Reglas:
+- Campo obligatorio
+- Debe ser un número válido (acepta decimales)
+- Debe ser mayor a 0
+- Rango permitido: entre $1 y $1,000,000
+- Máximo 9 dígitos antes del punto decimal
+- Mensaje si vacío: 'El campo Ingresos Mensuales es obligatorio'
+- Mensaje si no es número: 'Ingresos Mensuales debe contener solo números'
+- Mensaje si no es positivo: 'Ingresos Mensuales debe ser mayor a 0'
+- Mensaje si fuera de rango: 'Ingresos Mensuales debe estar entre 1 y 1000000'
+- Mensaje si excede dígitos: 'Ingresos Mensuales no puede tener más de 9 dígitos'
+
+CAMPO: EGRESOS MENSUALES (txtEgresos)
+Reglas:
+- Campo obligatorio
+- Debe ser un número válido (acepta decimales)
+- No puede ser negativo (puede ser 0)
+- Rango permitido: entre $0 y $1,000,000
+- Máximo 9 dígitos antes del punto decimal
+- Validación adicional: No puede ser mayor que los ingresos
+- Mensaje si vacío: 'El campo Egresos Mensuales es obligatorio'
+- Mensaje si no es número: 'Egresos Mensuales debe contener solo números'
+- Mensaje si negativo: 'Egresos Mensuales no puede ser negativo'
+- Mensaje si fuera de rango: 'Egresos Mensuales debe estar entre 0 y 1000000'
+- Mensaje si excede dígitos: 'Egresos Mensuales no puede tener más de 9 dígitos'
+- Mensaje si excede ingresos: 'Los egresos no pueden ser mayores a los ingresos'
+
+CAMPO: MONTO SOLICITADO (txtMonto)
+Reglas:
+- Campo obligatorio
+- Debe ser un número válido (acepta decimales)
+- Debe ser mayor a 0
+- Rango permitido: entre $1,000 y $10,000,000
+- Máximo 8 dígitos antes del punto decimal
+- Mensaje si vacío: 'El campo Monto Solicitado es obligatorio'
+- Mensaje si no es número: 'Monto Solicitado debe contener solo números'
+- Mensaje si no es positivo: 'Monto Solicitado debe ser mayor a 0'
+- Mensaje si fuera de rango: 'Monto Solicitado debe estar entre 1000 y 10000000'
+- Mensaje si excede dígitos: 'Monto Solicitado no puede tener más de 8 dígitos'
+
+CAMPO: PLAZO EN AÑOS (txtPlazo)
+Reglas:
+- Campo obligatorio
+- Debe ser un número entero (NO acepta decimales)
+- Debe ser mayor a 0
+- Rango permitido: entre 1 y 30 años
+- Máximo 2 dígitos
+- Mensaje si vacío: 'El campo Plazo en años es obligatorio'
+- Mensaje si no es entero: 'Plazo en años debe ser un número entero'
+- Mensaje si no es positivo: 'Plazo en años debe ser mayor a 0'
+- Mensaje si fuera de rango: 'Plazo en años debe estar entre 1 y 30'
+- Mensaje si excede dígitos: 'Plazo en años no puede tener más de 2 dígitos'
+
+CAMPO: TASA DE INTERÉS ANUAL (txtTasaInteres)
+Reglas:
+- Campo obligatorio
+- Debe ser un número válido (acepta decimales)
+- Debe ser mayor a 0
+- Rango permitido: entre 0.1% y 100%
+- Mensaje si vacío: 'El campo Tasa de Interés es obligatorio'
+- Mensaje si no es número: 'Tasa de Interés debe contener solo números'
+- Mensaje si no es positivo: 'Tasa de Interés debe ser mayor a 0'
+- Mensaje si fuera de rango: 'Tasa de Interés debe estar entre 0.1 y 100'"
+
+================================================================================
+3. PROMPT PARA ESTRUCTURA DE FUNCIONES DE VALIDACIÓN
+================================================================================
+
+"Crea una arquitectura modular de funciones de validación en JavaScript:
+
+FUNCIONES GENÉRICAS (reutilizables):
+1. limpiarErrores() - Elimina todos los mensajes de error y clases CSS
+2. mostrarError(idInput, idError, mensaje) - Muestra un error específico
+3. validarCampoVacio(valor, nombreCampo) - Retorna error si está vacío
+4. validarNumero(valor, nombreCampo) - Retorna error si no es número
+5. validarPositivo(valor, nombreCampo) - Retorna error si no es positivo
+6. validarNoNegativo(valor, nombreCampo) - Retorna error si es negativo
+7. validarRango(valor, nombreCampo, min, max) - Retorna error si fuera de rango
+8. validarMaxDigitos(valor, nombreCampo, maxDigitos) - Retorna error si excede dígitos
+
+FUNCIONES ESPECÍFICAS (por campo):
+1. validarIngresos(valor) - Aplica todas las reglas para ingresos
+2. validarEgresos(valor) - Aplica todas las reglas para egresos
+3. validarEgresosVsIngresos(ingresos, egresos) - Validación relacional
+4. validarMonto(valor) - Aplica todas las reglas para monto
+5. validarPlazo(valor) - Aplica todas las reglas para plazo
+6. validarTasaInteres(valor) - Aplica todas las reglas para tasa
+
+FUNCIÓN PRINCIPAL:
+validarFormulario() - Coordina todas las validaciones y retorna true/false
+
+ARQUITECTURA:
+- Cada función específica llama a las funciones genéricas en secuencia
+- Si una validación falla, retorna el error inmediatamente (early return)
+- Si todas pasan, retorna null (sin error)
+- La función principal recorre todos los campos y acumula errores
+- Retorna true solo si TODOS los campos son válidos"
+
+================================================================================
+4. PROMPT PARA INTEGRACIÓN CON HTML
+================================================================================
+
+"Implementa la integración de las validaciones con el HTML existente:
+
+MODIFICACIONES AL HTML:
+1. Agregar elementos <span> para mensajes de error debajo de cada input:
+   - <span class='error-message' id='errorIngresos'></span>
+   - <span class='error-message' id='errorEgresos'></span>
+   - <span class='error-message' id='errorMonto'></span>
+   - <span class='error-message' id='errorPlazo'></span>
+   - <span class='error-message' id='errorTasaInteres'></span>
+
+2. Agregar referencia al archivo de validaciones ANTES de funciones.js:
+   <script src='validaciones.js'></script>
+   <script src='funciones.js'></script>
+
+MODIFICACIONES AL JAVASCRIPT (simulador.js):
+1. Modificar la función calcular() para incluir validación:
+   function calcular() {
+       // Validar formulario PRIMERO
+       if (!validarFormulario()) {
+           return; // Detener ejecución si hay errores
+       }
+       
+       // Resto del código original...
+   }
+
+REGLAS:
+- NO modificar IDs existentes
+- NO agregar nuevos IDs innecesarios
+- Mantener toda la funcionalidad original
+- Las validaciones son una capa adicional, no reemplazan código"
+
+================================================================================
+5. PROMPT PARA ESTILOS CSS DE VALIDACIONES
+================================================================================
+
+"Crea los estilos CSS para los mensajes de error y estados de validación:
+
+ESTILOS REQUERIDOS:
+
+/* Mensajes de error */
+.error-message {
+    display: block;
+    color: #ef4444;               /* Rojo danger */
+    font-size: 0.813rem;          /* Pequeño pero legible */
+    font-style: italic;           /* Cursiva */
+    margin-top: 0.5rem;           /* Espaciado superior */
+    min-height: 1.2rem;           /* Reservar espacio */
+    font-weight: 500;             /* Semi-bold para visibilidad */
+}
+
+/* Input con error */
+.form-input.input-error {
+    border-color: #ef4444;                    /* Borde rojo */
+    background-color: rgba(239, 68, 68, 0.05); /* Fondo rojo muy suave */
+}
+
+/* Input con error en focus */
+.form-input.input-error:focus {
+    border-color: #ef4444;                    /* Mantener borde rojo */
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); /* Sombra roja */
+}
+
+INTEGRACIÓN:
+- Agregar estos estilos al archivo simulador.css existente
+- Ubicar en una sección claramente identificada
+- Mantener consistencia con el sistema de diseño (variables CSS)"
+
+================================================================================
+6. PROMPT PARA EXPRESIONES REGULARES DE VALIDACIÓN
+================================================================================
+
+"Define las expresiones regulares necesarias para validar tipos de datos:
+
+REGEX PARA NÚMEROS CON DECIMALES:
+Patrón: /^-?\d+(\.\d+)?$/
+Explicación:
+- ^ = inicio de cadena
+- -? = signo negativo opcional
+- \d+ = uno o más dígitos
+- (\.\d+)? = punto decimal seguido de dígitos (opcional)
+- $ = fin de cadena
+Uso: Validar ingresos, egresos, monto, tasa de interés
+
+REGEX PARA NÚMEROS ENTEROS:
+Patrón: /^\d+$/
+Explicación:
+- ^ = inicio de cadena
+- \d+ = uno o más dígitos
+- $ = fin de cadena
+Uso: Validar plazo en años
+
+VALIDACIÓN DE MÁXIMO DÍGITOS:
+Código:
+const valorEntero = valor.split('.')[0].replace('-', '');
+if (valorEntero.length > maxDigitos) {
+    // Error
+}
+Explicación:
+- split('.')[0] = obtener parte entera
+- replace('-', '') = remover signo negativo
+- length = contar caracteres
+- Comparar con máximo permitido"
+
+================================================================================
+7. PROMPT PARA CASOS DE PRUEBA
+================================================================================
+
+"Define casos de prueba para verificar que las validaciones funcionen correctamente:
+
+CASOS DE PRUEBA PARA INGRESOS:
+✓ Valor válido: '5000' → PASA
+✓ Valor con decimales: '5000.50' → PASA
+✗ Campo vacío: '' → ERROR: 'El campo Ingresos Mensuales es obligatorio'
+✗ Letras: 'abc' → ERROR: 'Ingresos Mensuales debe contener solo números'
+✗ Valor negativo: '-1000' → ERROR: 'Ingresos Mensuales debe ser mayor a 0'
+✗ Valor cero: '0' → ERROR: 'Ingresos Mensuales debe ser mayor a 0'
+✗ Fuera de rango superior: '2000000' → ERROR: 'Ingresos Mensuales debe estar entre...'
+✗ Demasiados dígitos: '1234567890' → ERROR: 'Ingresos Mensuales no puede tener más de 9 dígitos'
+
+CASOS DE PRUEBA PARA EGRESOS:
+✓ Valor válido: '2000' → PASA
+✓ Valor cero: '0' → PASA
+✓ Egresos menores que ingresos: Ingresos=5000, Egresos=3000 → PASA
+✗ Campo vacío: '' → ERROR
+✗ Valor negativo: '-500' → ERROR: 'Egresos Mensuales no puede ser negativo'
+✗ Egresos mayores que ingresos: Ingresos=5000, Egresos=6000 → ERROR: 'Los egresos no pueden ser mayores...'
+
+CASOS DE PRUEBA PARA MONTO:
+✓ Valor válido: '50000' → PASA
+✗ Menor al mínimo: '500' → ERROR: 'Monto Solicitado debe estar entre 1000 y...'
+✗ Mayor al máximo: '15000000' → ERROR
+
+CASOS DE PRUEBA PARA PLAZO:
+✓ Valor válido: '5' → PASA
+✗ Decimal: '5.5' → ERROR: 'Plazo en años debe ser un número entero'
+✗ Menor a 1: '0' → ERROR
+✗ Mayor a 30: '35' → ERROR
+
+CASOS DE PRUEBA PARA TASA:
+✓ Valor válido: '12.5' → PASA
+✗ Muy baja: '0' → ERROR: 'Tasa de Interés debe estar entre 0.1 y 100'
+✗ Muy alta: '150' → ERROR
+
+PRUEBA INTEGRADA:
+1. Llenar todos los campos correctamente → Cálculo se ejecuta
+2. Dejar un campo vacío → Mensaje de error, cálculo NO se ejecuta
+3. Corregir el campo → Error desaparece
+4. Calcular nuevamente → Cálculo se ejecuta correctamente"
+
+================================================================================
+REGLAS IMPLEMENTADAS EN EL SISTEMA
+================================================================================
+
+✅ CAMPOS OBLIGATORIOS:
+   Todos los 5 campos deben tener valor antes de calcular
+
+✅ TIPO DE DATOS:
+   - Ingresos, Egresos, Monto, Tasa: números decimales
+   - Plazo: números enteros únicamente
+
+✅ VALORES POSITIVOS:
+   - Ingresos: mayor a 0
+   - Monto: mayor a 0
+   - Plazo: mayor a 0
+   - Tasa: mayor a 0
+   - Egresos: no negativo (puede ser 0)
+
+✅ RANGOS PERMITIDOS:
+   - Ingresos: $1 - $1,000,000
+   - Egresos: $0 - $1,000,000
+   - Monto: $1,000 - $10,000,000
+   - Plazo: 1 - 30 años
+   - Tasa: 0.1% - 100%
+
+✅ MÁXIMO DE DÍGITOS:
+   - Ingresos: 9 dígitos
+   - Egresos: 9 dígitos
+   - Monto: 8 dígitos
+   - Plazo: 2 dígitos
+   - Tasa: sin límite de dígitos
+
+✅ VALIDACIONES LÓGICAS:
+   - Egresos no pueden ser mayores que ingresos
+
+✅ COMPORTAMIENTO:
+   - Validación se ejecuta al presionar "Calcular Crédito"
+   - Si hay errores, el cálculo NO se ejecuta
+   - Errores se muestran debajo de cada campo
+   - Errores desaparecen al corregir el dato
+   - Inputs con error tienen borde y fondo rojo
+   - Mensajes en rojo cursiva
+
+================================================================================
+INSTRUCCIONES IMPORTANTES DEL DESARROLLO
+================================================================================
+
+1. ORDEN DE CARGA DE SCRIPTS:
+   Importante: validaciones.js debe cargarse ANTES que funciones.js
+   Razón: funciones.js depende de las funciones de validación
+
+2. NO MODIFICAR IDS EXISTENTES:
+   Los IDs son usados por el código original:
+   - txtIngresos, txtEgresos, txtMonto, txtPlazo, txtTasaInteres
+   - spnDisponible, spnCapacidadPago, etc.
+   - btnCalcularCredito, btnReiniciar
+
+3. ARQUITECTURA MODULAR:
+   - Funciones genéricas son reutilizables
+   - Cada campo tiene su función específica
+   - Función principal coordina todo
+   - Fácil agregar nuevas validaciones
+
+4. MANEJO DE ERRORES:
+   - Limpiar errores antes de validar
+   - Validar todos los campos aunque haya errores
+   - Mostrar todos los errores a la vez
+   - No usar alert() ni confirm()
+
+5. EXPERIENCIA DE USUARIO:
+   - Feedback visual inmediato (borde rojo)
+   - Mensajes claros y específicos
+   - No bloquear navegación
+   - Permitir correcciones incrementales
+
+6. MANTENIBILIDAD:
+   - Código bien comentado
+   - Funciones con nombres descriptivos
+   - Validaciones centralizadas
+   - Fácil modificar rangos y reglas
+
+7. COMPATIBILIDAD:
+   - JavaScript vanilla (sin librerías)
+   - Compatible con todos los navegadores modernos
+   - No requiere frameworks
+   - Mantiene funcionalidad original intacta
+
+================================================================================
+ARCHIVOS CREADOS/MODIFICADOS
+================================================================================
+
+NUEVOS ARCHIVOS:
+✅ validaciones.js - Sistema completo de validaciones (348 líneas)
+✅ validaciones.txt - Este archivo con todos los prompts
+
+ARCHIVOS MODIFICADOS:
+✅ index.html - Agregados <span> para errores y referencia a validaciones.js
+✅ simulador.css - Agregados estilos para .error-message y .input-error
+✅ simulador.js - Agregada llamada a validarFormulario() en función calcular()
+
+ARCHIVOS SIN MODIFICAR:
+✅ funciones.js - Mantiene toda la lógica de negocio original
+✅ logo.png - Sin cambios
+✅ prompts.txt - Archivo de prompts del diseño anterior
+
+================================================================================
+RESUMEN DE VALIDACIONES POR CAMPO
+================================================================================
+
+INGRESOS MENSUALES:
+- Obligatorio ✓
+- Solo números ✓
+- Mayor a 0 ✓
+- Rango: $1 - $1,000,000 ✓
+- Máximo 9 dígitos ✓
+
+EGRESOS MENSUALES:
+- Obligatorio ✓
+- Solo números ✓
+- No negativo ✓
+- Rango: $0 - $1,000,000 ✓
+- Máximo 9 dígitos ✓
+- No mayor que ingresos ✓
+
+MONTO SOLICITADO:
+- Obligatorio ✓
+- Solo números ✓
+- Mayor a 0 ✓
+- Rango: $1,000 - $10,000,000 ✓
+- Máximo 8 dígitos ✓
+
+PLAZO EN AÑOS:
+- Obligatorio ✓
+- Solo números enteros ✓
+- Mayor a 0 ✓
+- Rango: 1 - 30 años ✓
+- Máximo 2 dígitos ✓
+
+TASA DE INTERÉS:
+- Obligatorio ✓
+- Solo números ✓
+- Mayor a 0 ✓
+- Rango: 0.1% - 100% ✓
+
+================================================================================
+FIN DEL DOCUMENTO
+================================================================================

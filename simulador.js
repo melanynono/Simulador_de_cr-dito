@@ -1,6 +1,12 @@
 //AQUI EL JAVASCRIPT PARA MANIPULAR EL HTML
 
 function calcular(){
+    
+    // VALIDAR FORMULARIO ANTES DE CALCULAR
+    if (!validarFormulario()) {
+        // Si hay errores, no continuar con el cálculo
+        return;
+    }
 
     let ingresos = parseFloat(document.getElementById("txtIngresos").value);
     let egresos = parseFloat(document.getElementById("txtEgresos").value);

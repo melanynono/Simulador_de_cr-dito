@@ -500,6 +500,29 @@ body {
 }
 
 /* ============================================
+   MENSAJES DE ERROR (VALIDACIONES)
+   ============================================ */
+.error-message {
+    display: block;
+    color: var(--danger-color);
+    font-size: 0.813rem;
+    font-style: italic;
+    margin-top: var(--spacing-xs);
+    min-height: 1.2rem;
+    font-weight: 500;
+}
+
+.form-input.input-error {
+    border-color: var(--danger-color);
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+.form-input.input-error:focus {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* ============================================
    RESPONSIVE DESIGN
    ============================================ */
 
