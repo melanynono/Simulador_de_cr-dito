@@ -13,7 +13,7 @@ function calcularDisponible(ingresos, egresos){
 
 function calcularCapacidadPago(montoDisponible){
 
-    let capacidadPago = montoDisponible * 0.50;
+    let capacidadPago = montoDisponible * 0.30;
     return capacidadPago;
 }
 
@@ -45,3 +45,4 @@ function aprobarCredito(capacidadPago, cuotaMensual){
         return false;
     }
 }
+
